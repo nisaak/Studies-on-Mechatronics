@@ -17,7 +17,7 @@
 
 \begin{document}
 \title{
-''Drive-by-Wire"
+Drive-by-Wire
 \\[0.5cm]
 \large{Studies on Mechatronics FS 2017}
 }
@@ -53,41 +53,97 @@
 \section{Introduction}
 
 %Motivation
-The decision to write a paper on the state of the art of drive-by-wire systems came natural, as we were designing a drive-by-wire system ourselves for our bachelor thesis. With the rise in popularity of electric cars, manufacturers and research groups see new opportunities in overhauling the previous methods of controlling a car. This rise in interest led to many approaches and solutions. The idea of this paper is not to gain new insights, but to provide the reader with a basic understanding of this topic. The content of this paper is mostly based on the findings of the state of the art technology.
+The decision to write a paper on the state of the art of drive-by-wire systems came natural, as we were designing a drive-by-wire system ourselves for our bachelor thesis. With the rise in popularity of electric cars, manufacturers and research groups see new opportunities in overhauling the previous methods of controlling a car.\\
+This rise in interest led to many approaches and solutions. The idea of this paper is not to gain new insights, but to provide the reader with a basic understanding of this topic. The content of this paper is mostly based on the findings of the state of the art technology.
 
-%Rewrite
-%The paper is structured as follows. An overview of a drive-by-wire system is given in section II. In Section III we show the different ways how the vehicle dynamics were modelled and implemented in some papers.
-%
-%Section IV discusses common control algorithms mentioned in the various papers we read, namely sliding mode control, fuzzy control and h-infinity control. 
 
-In the early years of the drive-by-wire technology, an implementation seemed far fetched.
+
+A drive-by-wire system mostly focuses on improving vehicle functionality and driver safety. Assistance systems can be introduced much easier. This is done, by decoupling mechanical linkages, removing hydraulic systems and replacing them with electronic actuators, sensors and controllers.\\ With the help of feedback sensors, the car assists the driver in the judgement of the conditions and the vehicle's state. A rotary motion sensor is quicker to detect wheel slip and reacts accordingly. A drive-by-wire system provides many advantages, such as the aforementioned safety aspect, functionality, smaller installation place and easier implementation for future use in autonomous vehicles.
+\\These however come with a significant rise in complexity. With the high requirements in safety, there have to be many fallback levels. These requirements especially affect the cost of the vehicle. In chapter IV we will go into further detail of fault tolerance.
+
+The paper is structured as follows. An overview of a drive-by-wire system is given in section II. In Section III we show the different ways how the vehicle dynamics were modelled and implemented in some papers.
+In Section IV we talk about the importance of fault tolerance.
+Section V discusses common control algorithms mentioned in the various papers we read, namely sliding mode control, fuzzy control and h-infinity control. 
+Section VI presents some common testing methods.
+We sum up our results in section VII and finally draw our conclusion in section VIII.
+
+In the following we will abbreviate drive by wire with dbw, steer-by-wire with sbw, brake-by-wire with bbw and throttle-by-wire with tbw.
 
 \section{Drive by Wire}
+
+A drive-by-wire system usually consists of three subsystems, namely steer-by-wire, brake-by-wire and throttle-by-wire. 
 
 \subsection{Steer by Wire}
 
 %Control Objective
 %Components
-\subsubsection{Implementation}
+By setting up appropriate sensor and actor dynamics, a stable steer-by-wire system can be created.
+The steering feel of a mechanical decoupled steer by wire car can be even better than in a car with conventional electromechanical steering 
+%(Koch, 2009(Steer by wire)).
+
+A central question that comes with the objective of robust steer-by-wire is how the steering interface e.g. steering wheel etc. gives a reference target and what sensor measurement is led back to the steering interface as steering response. One way of doing this is to define a reference target by applying a moment to the steering wheel. The sensor measurement will be brought back to the steering wheel and is translated to steering angle. If this combination is coupled with yaw velocity as reference 
+target as well as response a working steering function can be implemented. \\
+In the case of oversteering the feedback will yield a greater steering angle as the current one, this leads to the current steering position being coupled to a smaller force what directly decreases the reference target and therefore acts stabilizing.
+%four wheel steering mentioned in  {7]}
 
 \subsection{Throttle by Wire}
 
+After removing the mechanical linkage, a tbw system is usually made up of an pedal and sensors. In paper [9], a hall effect sensor was used, in order to convert the accelerators pedal's position into a proportional analogue voltage, which can be used to control the respective throttle. In full autonomous mode, the sensor is decoupled from the system and the controller mimics the voltage. In order for the driver to have a certain level of feedback, a spring is attached to the pedal, imitating the throttle return spring. If each wheel is powered by an individual motor as proposed in [3], there is an electronic control unit (ECU) for every motor, controlling the wheel's rotational speed. While the benefits of a four wheel drive are more known, being able to control all four wheels individually greatly benefits the vehicle's functionality in regards to manoeuvres in critical situations. 
+%mentioning "four wheel drive"? benefits such as removing motor, (can crush you [4])
+
 \subsection{Brake by Wire}
+
+A well-implemented bbw system notably increases the vehicle's performance in situation where controlling the vehicle's yaw rate is of importance. While a system consisting only of electronic actuators is proposed in \cite{Weidong}, \cite{Aoki} introduces a hydraulic servo brake system with regenerative control. 
+%richi schrib du öber das bitte
+
+
+
 \subsubsection{Implementation}
 
 
 \section{Vehicle Dynamics, Vehicle Model}
-\subsection{Tyre modelling}
-\subsection{Bicycle model}
+
+Behind a working dbw system, there needs to be a detailed and complete vehicle model in place. This mathematical model has a determining influence on the controller's performance. When choosing a model, it is important to specify what level of complexity is sufficient. A simpler model may help design a faster controller, while sacrificing precision. It is therefore crucial to identify which states have to be controlled.
+
+\subsection{Bicycle/single track model}
+A simple and common model is the bicycle model, also known as single track model. In papers \cite{Zheng} and \cite{vandersande} this vehicle model has been used. It derives from the double track model, where the left and right wheels have been merged in the front and back axis, creating the single track model. The model accounts for yaw, lateral and longitudinal motion. For simplicity, roll is mostly neglected.
+
+\subsection{double-track model}
+The double track model is a more complex version of the single track model. 
+Paper \cite{Song} uses a combination of the single and double track model. While the double track is implemented to deal with the non-linear characteristic of the vehicle, they argue that a driver usually steers the vehicle according to its linear response. Therefore the bicycle model is introduced as a reference model, so that manoeuvring the vehicle is easy, both in linear and non-linear range.
+
 \subsection{Multi-body modelling}
 
-\section{Fault tolerance}
+\cite{vandersande} proposes a multi-body model derived with the software package from MATLAB/Simulink formerly called SimMechanics, now called Simscape Multibody. This can be used to model the car in great detail. 
 
+\subsection{Tyre modelling}
+
+Tyre modelling is a very complex and heavily research topic in the automotive industry. We will therefore not go into too much detail, and keep the concepts and ideas as simple as possible.
+
+\section{Fault tolerance}
+The basic requirement for the operation of a Steer-by-Wire system is a fault tolerant system architecture %(Heitzer und Seewald, 2000).
+This necessitates a reliable fault management strategy.
+As a result, Sensors should be implemented in groups of three. A faulty sensor can so be overruled by the the two correctly funktioning sensors. Control units and actors should be implemented twofold redundant. If an error is detected the faulty operating unit shuts down and the second Control unit or actor continues with the operation. To lower the cost of redundant implementation, a fault management strategy can be defined. In the case of failure of a non critical systems component, only certain functions of the system are shut down but the overall functionality remains. For example if a wheel Revolution sensor??? fails, only functions that need the current velocity shut down but the car can still safely slowdown.
 
 \section{Control Algorithms}
 \subsection{Non-Linearity}
 \subsection{Sliding Mode Control}
 \subsection{Fuzzy Control}
+The basic idea of fuzzy control is to map a set of input variables to a set of output instructions
+by using a multitude of if then statements. Therefore the inputs are characterized by their
+membership to a set of fuzzy sets. The degree of membership can be gradual and each input can 
+be a member of multiple fuzzy sets to certain degree. This process of converting a set of crisp
+input variables to a set of fuzzy membership functions is called fuzzyfication. The next step
+is to determine the output based the underlying control rules. The membership functions are
+mapped to a fuzzy output. This fuzzy output is then defuzzyficated to deliver a real world output.
+In short, each combination of membership of a variable leads output defined by the if then rules.
+%(http://www.springer.com/cda/content/document/cda_downloaddocument/9781846284687-c1.pdf.)
+
+This method grants way do deal with a multitude of inputs in a system with unknown environmental
+parameters. It is especially effective at handling uncertainties and unlinearitites associated
+with complex control systems such as breaking systems in a car. The nonlinearities can be 
+captured by the control rules.
+[1]
 \subsection{H-Infinity Control}
 
 \section{Testing, Verification}
@@ -109,7 +165,7 @@ Weidong Xiang, Paul C. Richardson, Chenming Zhao, Syed Mohammad,
 NO.1, January 2008.
 http://ieeexplore.ieee.org/document/4358463/
 
-\bibitem{Worldcongress2008}
+\bibitem{Aoki}
 Yasushi Aoki, Kenji Suzuki, Hiroshi Nakano, Kohei Akamine, Takaomi Shirase, Kouji Sakai, 
 \emph{Development of Hydraulic Servo Brake for Cooperative Control with Regenerative Brake}
 http://papers.sae.org/2007-01-0868/
@@ -118,7 +174,7 @@ http://papers.sae.org/2007-01-0868/
 Peter Pfeffer, Manfred Harrer, \emph{Lenkungshandbuch: Lenksysteme, Lenkgefühl, Fahrdynamik von Kraftfahrzeugen} http://www.springer.com/de/book/9783658009762
 \textbf{Abschnitt R, Steer-by-wire}
 
-\bibitem{JSME}
+\bibitem{Se-Wook}
 Se-Wook Oh, Ho-Chol Chae, Seok-Chan Yun, Chang-Soo Han
 \emph{The Design of a Controller for the Steer-by-Wire System}
 \url{https://www.jstage.jst.go.jp/article/jsmec/47/3/47_3_896/_article/}
@@ -142,6 +198,11 @@ http://www.tandfonline.com/doi/full/10.1080/00423114.2016.1197407
 Pan Song, Masayoshi Tomizuka, Changfu Zong
 \emph{A novel integrated chassis controller for full drive-by-wire vehicles}
 http://www.tandfonline.com/doi/abs/10.1080/00423114.2014.991331
+
+\bibitem{SAE Car}
+Jordan Kalinowski, Thomas Drage, Thomas Bräunl
+\emph{Drive-By-Wire for an Autonomous Formula SAE Car}
+http://www.sciencedirect.com/science/article/pii/S1474667016429484
 
 
 
