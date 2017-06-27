@@ -45,9 +45,9 @@ Drive-by-Wire
 \thispagestyle{plain}
 \pagestyle{plain}
 
-%\begin{abstract}
-%The abstract goes here.
-%\end{abstract}
+\begin{abstract}
+A   B STRaACt   TT  AAAAAAAAAAAAAAARTTTT
+\end{abstract}
 
 
 \section{Introduction}
@@ -81,20 +81,23 @@ By setting up appropriate sensor and actor dynamics, a stable steer-by-wire syst
 The steering feel of a mechanical decoupled steer by wire car can be even better than in a car with conventional electromechanical steering 
 %(Koch, 2009(Steer by wire)).
 
-A central question that comes with the objective of robust steer-by-wire is how the steering interface e.g. steering wheel etc. gives a reference target and what sensor measurement is led back to the steering interface as steering response. One way of doing this is to define a reference target by applying a moment to the steering wheel. The sensor measurement will be brought back to the steering wheel and is translated to steering angle. If this combination is coupled with yaw velocity as reference 
-target as well as response a working steering function can be implemented. \\
+A central question that comes with the objective of robust steer-by-wire is how the steering interface e.g. steering wheel gives a reference target and what sensor measurement is fed back to the steering interface as steering response. One way of doing this is to define a reference target by applying a torque to the steering wheel. The sensor measurement will be sent back to the steering wheel and is translated to a steering angle. If this combination is coupled with yaw velocity as reference 
+target as well as response, a working steering function can be implemented. \\
 In the case of oversteering the feedback will yield a greater steering angle as the current one, this leads to the current steering position being coupled to a smaller force what directly decreases the reference target and therefore acts stabilizing.
 %four wheel steering mentioned in  {7]}
 
 \subsection{Throttle by Wire}
 
-After removing the mechanical linkage, a tbw system is usually made up of an pedal and sensors. In paper [9], a hall effect sensor was used, in order to convert the accelerators pedal's position into a proportional analogue voltage, which can be used to control the respective throttle. In full autonomous mode, the sensor is decoupled from the system and the controller mimics the voltage. In order for the driver to have a certain level of feedback, a spring is attached to the pedal, imitating the throttle return spring. If each wheel is powered by an individual motor as proposed in [3], there is an electronic control unit (ECU) for every motor, controlling the wheel's rotational speed. While the benefits of a four wheel drive are more known, being able to control all four wheels individually greatly benefits the vehicle's functionality in regards to manoeuvres in critical situations. 
+After removing the mechanical linkage, a tbw system is usually made up of an pedal and sensors. In paper [9], a hall effect sensor was used, in order to convert the accelerators pedal's position into a proportional analogue voltage, which can be used to control the respective throttle. In full autonomous mode, the sensor is decoupled from the system and the controller mimics the voltage. In order for the driver to have a certain level of feedback, a spring is attached to the pedal, imitating the throttle return spring. 
+
+If each wheel is powered by an individual motor as proposed in [3], there is an electronic control unit (ECU) for every motor, controlling the wheel's rotational speed. While the benefits of a four wheel drive are more known, being able to control all four wheels individually greatly benefits the vehicle's functionality in regards to manoeuvres in critical situations. 
 %mentioning "four wheel drive"? benefits such as removing motor, (can crush you [4])
 
 \subsection{Brake by Wire}
 
 A well-implemented bbw system notably increases the vehicle's performance in situation where controlling the vehicle's yaw rate is of importance. While a system consisting only of electronic actuators is proposed in \cite{Weidong}, \cite{Aoki} introduces a hydraulic servo brake system with regenerative control. 
 %richi schrib du öber das bitte
+
 
 
 
@@ -106,7 +109,49 @@ A well-implemented bbw system notably increases the vehicle's performance in sit
 Behind a working dbw system, there needs to be a detailed and complete vehicle model in place. This mathematical model has a determining influence on the controller's performance. When choosing a model, it is important to specify what level of complexity is sufficient. A simpler model may help design a faster controller, while sacrificing precision. It is therefore crucial to identify which states have to be controlled.
 
 \subsection{Bicycle/single track model}
-A simple and common model is the bicycle model, also known as single track model. In papers \cite{Zheng} and \cite{vandersande} this vehicle model has been used. It derives from the double track model, where the left and right wheels have been merged in the front and back axis, creating the single track model. The model accounts for yaw, lateral and longitudinal motion. For simplicity, roll is mostly neglected.
+A simple and common model is the bicycle model, also known as single track model. In papers \cite{Zheng} and \cite{vandersande} this vehicle model has been used. It derives from the double track model, where the left and right wheels have been merged in the front and back axis, creating the single track model. The model accounts for yaw, lateral and longitudinal motion. For simplicity, roll is often neglected.
+
+$
+\dot{x}=
+\begin{bmatrix}
+	\dot{v_{y}} \\ 
+	
+\\	\dot{r_{z}}
+\end{bmatrix} 
+=Ax+B\delta_{rack}
+$
+
+$y=r_{z}=Cx$
+
+$
+A=-
+\begin{bmatrix}
+\dfrac{C_{\alpha1}+C_{\alpha2}}{mv_{x}} &
+\dfrac{C_{\alpha1}a-C_{\alpha2}b}{mv_{x}}+v_{x}\\
+\\
+\dfrac{aC_{\alpha1}-bC_{\alpha2}}{I_{zz} v_{x}} &
+\dfrac{a^2C_{\alpha1}+b^2C_{\alpha2}}{I_{zz}v_{x}}
+\end{bmatrix}
+$
+\\
+
+
+$B=
+\begin{bmatrix}
+\dfrac{C_{\alpha1}}{m}\\
+\\
+\dfrac{aC_{\alpha2}}{I_{zz}}
+\end{bmatrix}
+$
+,
+$C=
+\begin{bmatrix}
+0 & 1
+\end{bmatrix}
+$
+
+By looking at the vehicle dynamics, it becomes apparent that the single track model does not model any non-linearities of the vehicle. Paper \cite{vandersande} accounts for the non-linearity of the tyres by introducing the local gradient of the lateral force. It describes the tyre's cornering stiffness when linearised around a operating point.
+
 
 \subsection{double-track model}
 The double track model is a more complex version of the single track model. 
@@ -118,41 +163,72 @@ Paper \cite{Song} uses a combination of the single and double track model. While
 
 \subsection{Tyre modelling}
 
-Tyre modelling is a very complex and heavily research topic in the automotive industry. We will therefore not go into too much detail, and keep the concepts and ideas as simple as possible.
+Tyre modelling is a very complex and heavily research topic in the automotive industry, as tyres are probably the most difficult, but also important components to model. We will therefore not go into too much detail, and keep the concepts and ideas as simple as possible.
+The basis of tyre modelling lays in the tyre's elasticity and deformation when subjected to forces. These characteristics 
+
+\cite{Se-Wook} makes use of the Pacejka model, also called the magic formula. The name stems the fact that no physical basis was used for this model, but a wide variety of coefficients are in place to tune the existing forces on the tyre.
+\cite{Weidong} makes use of the Dugoff model.
 
 \section{Fault tolerance}
-The basic requirement for the operation of a Steer-by-Wire system is a fault tolerant system architecture %(Heitzer und Seewald, 2000).
-This necessitates a reliable fault management strategy.
-As a result, Sensors should be implemented in groups of three. A faulty sensor can so be overruled by the the two correctly funktioning sensors. Control units and actors should be implemented twofold redundant. If an error is detected the faulty operating unit shuts down and the second Control unit or actor continues with the operation. To lower the cost of redundant implementation, a fault management strategy can be defined. In the case of failure of a non critical systems component, only certain functions of the system are shut down but the overall functionality remains. For example if a wheel Revolution sensor??? fails, only functions that need the current velocity shut down but the car can still safely slowdown.
+The basic requirement for the operation of a sbw system is a fault tolerant system architecture %(Heitzer und Seewald, 2000).
+
+In \cite{Lenkungshandbuch} it is explained, the customers wants his product to be reliable. This of course means that is has to provide a functionality for a designated time under certain circumstances. This leads to the need of balancing between safety and availability. If a product is safe under all circumstances, it may not be available at some times. In the case of failure of a non critical system component, only certain functions of the system are shut down but the overall functionality and availability remains. For example if a wheel rotation sensor fails, only functions that need the current velocity shut down, such as cruise control or the speedometer.
+
+In order to consistently detect faults, sensors should be implemented in groups of three. A faulty sensor can so be overruled by the the two correctly functioning sensors. Control units and actors should be implemented twofold redundant. If an error is detected, the faulty operating unit shuts down and the second control unit or actuator continues with the operation. To lower the cost of redundant implementation, a fault management strategy can be defined. 
+
+In \cite{Lenkungshandbuch} the functionality of a vehicle is separated into the following possible states. 
+\begin{enumerate}
+	\item faultless
+	\item error state 1 (system failure e.g. ABS failure)
+	\item error state 2 (function failure)
+	\item emergency function (ECU failure of a steering actuator or similar)
+	\item function loss (total brake failure	)
+\end{enumerate}
+
+For every error state, there is a warning and/or restriction attached. 
+\begin{enumerate}
+	\item normal operation
+	\item warning without restriction, e.g. ABS led lights up
+	\item warning with restriction, e.g. maximum velocity limited
+	\item "limp home" function enabled, where maximum velocity is drastically limited, to for example provide the possibility to drive to the next service station
+	\item shut down or still stand
+\end{enumerate}
+
+This is one of the many reasons, why dbw vehicle are usually associated with high costs. Implementing a failsafe system and fallback levels requires a lot more effort, than for standard non-dbw vehicles. Mechanical linkages usually offer enough safety and reliability, which is why less fallback levels exist in non-dbw vehicles. 
+
+
 
 \section{Control Algorithms}
 \subsection{Non-Linearity}
+
+A car's dynamics are highly non-linear. This necessitates a non-linear control algorithm. This can be seen in \cite{vandersande}, where a LQR controller was developed for comparison. From the test results it is apparent that the controller is not able to stabilise the vehicle, resulting in large yaw swaying. This comes down to the fact that high lateral accelerations cause the tyres to behave non-linearly and causing the tyre's parameters to deviate substantially from the fixed parameters of the model.
+
+
 \subsection{Sliding Mode Control}
+
 \subsection{Fuzzy Control}
-The basic idea of fuzzy control is to map a set of input variables to a set of output instructions
-by using a multitude of if then statements. Therefore the inputs are characterized by their
-membership to a set of fuzzy sets. The degree of membership can be gradual and each input can 
-be a member of multiple fuzzy sets to certain degree. This process of converting a set of crisp
-input variables to a set of fuzzy membership functions is called fuzzyfication. The next step
-is to determine the output based the underlying control rules. The membership functions are
-mapped to a fuzzy output. This fuzzy output is then defuzzyficated to deliver a real world output.
-In short, each combination of membership of a variable leads output defined by the if then rules.
+The basic idea of fuzzy control is to map a set of input variables to a set of output instructions by using a multitude of if then statements. Therefore the inputs are characterized by their membership to a set of fuzzy sets. The degree of membership can be gradual and each input can be a member of multiple fuzzy sets to certain degree. This process of converting a set of crisp input variables to a set of fuzzy membership functions is called fuzzyfication. The next step is to determine the output based the underlying control rules. The membership functions are mapped to a fuzzy output. This fuzzy output is then defuzzyficated to deliver a real world output. In short, each combination of membership of a variable leads output defined by the if then rules.
 %(http://www.springer.com/cda/content/document/cda_downloaddocument/9781846284687-c1.pdf.)
 
-This method grants way do deal with a multitude of inputs in a system with unknown environmental
-parameters. It is especially effective at handling uncertainties and unlinearitites associated
-with complex control systems such as breaking systems in a car. The nonlinearities can be 
-captured by the control rules.
+This method grants way do deal with a multitude of inputs in a system with unknown environmental parameters. It is especially effective at handling uncertainties and unlinearitites associated with complex control systems such as breaking systems in a car. The nonlinearities can be captured by the control rules.
 [1]
 \subsection{H-Infinity Control}
 
 \section{Testing, Verification}
 
+Testing can be used to either verify a vehicle model or a controller. Usually the model is tested beforehand, as a faulty model can codetermine a controller's performance. 
+In order to study different controllers or vehicle models, it is important to have a fixed set of tests, so that the data is comparable.
+
+In order to verify a model, the real vehicle sensor data needs to be compared to the simulation data of the model. The more they match, the better is the model. To verify the model, the real vehicle undergoes different manoeuvres, such as a slalom and a double lane change at different velocities. This data can then be analysed and used to improve or validate a model. Discrepancies may exist due unmodeled parts or inaccurate parameters.
+
+In order to test a controller's performance a similar test setup is used. Now of course, the real vehicle data needs to be compared to the desired reference manoeuvre.
+
+An especially interesting test setup is the split-$\mu$ braking. In real life, it is a situation which catches most drivers off-guard. This can be the case, when right half of the road is frozen and the other left half not. If the driver now pushes the brakes, it will generate a yaw moment around the vehicle's centre of gravity. This is because, due to the different friction coefficients, the left side generates a significant higher longitudinal force when the brakes are applied. Of course a driver can only react to such a yaw moment via steering and throttle. However the car's controller, able to control each brake individually, is able to counter this moment efficiently.
+
 
 \section{Results and Discussion}
 
-
-
+Drive-by-wire system possess the ability to revolutionise the automotive industry. While they provide many technological advantages over standard cars, they still limp behind safety. Due to the increase in complexity and the related high error susceptibility, they have not yet gained the trust of the public, which is obviously a requirement for  success.
 
 \section{Conclusion}
 
