@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/W32TeX) (preloaded format=pdflatex 2017.5.31)  2 JUL 2017 15:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/W32TeX) (preloaded format=pdflatex 2017.5.31)  3 JUL 2017 15:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -655,55 +655,65 @@ e
 ABD: EveryShipout initializing macros
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
- [1{c:/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+<pictures/Figure-1-Under-steering-vs-over-steering.png, id=4, 301.125pt x 254.9
+525pt>
+File: pictures/Figure-1-Under-steering-vs-over-steering.png Graphic file (type 
+png)
+ <use pictures/Figure-1-Under-steering-vs-over-steering.png>
+Package pdftex.def Info: pictures/Figure-1-Under-steering-vs-over-steering.png 
+used on input line 91.
+(pdftex.def)             Requested size: 177.13412pt x 149.97717pt.
 
 
-]
-LaTeX Font Info:    Try loading font information for U+msa on input line 113.
- (c:/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[1{c:/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+
+] [2 <./pictures/Figure-1-Under-steering-vs-over-steering.png (PNG copy)>] [3]
+LaTeX Font Info:    Try loading font information for U+msa on input line 243.
+
+(c:/texlive/2016/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 113.
- (c:/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
+LaTeX Font Info:    Try loading font information for U+msb on input line 243.
+
+(c:/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 125--136
-
- []
-
-[2]
 Missing character: There is no Ã in font ptmri7t!
 Missing character: There is no ¼ in font ptmri7t!
 
-Underfull \hbox (badness 10000) in paragraph at lines 251--253
+Underfull \hbox (badness 10000) in paragraph at lines 267--269
 []\OT1/ptm/m/n/8 Peter Pf-ef-fer, Man-fred Har-rer, \OT1/ptm/m/it/8 Lenkung-sha
 nd-buch:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 251--253
+Underfull \hbox (badness 10000) in paragraph at lines 267--269
 \OT1/ptm/m/it/8 Lenksys-teme, Lenkgefhl, Fahr-dy-namik von Kraft-fahrzeu-gen
  []
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 260--263
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--279
 []\OT1/ptm/m/n/8 B. Zheng, S. An-war \OT1/ptm/m/it/8 Yaw sta-bil-ity con-trol o
 f a steer-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 260--263
+Underfull \hbox (badness 10000) in paragraph at lines 276--279
 \OT1/ptm/m/it/8 by-wire equipped ve-hi-cle via ac-tive front wheel steer-ing
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 275--278
+Underfull \hbox (badness 10000) in paragraph at lines 291--294
 []\OT1/ptm/m/n/8 Pan Song, Masayoshi Tomizuka, Changfu Zong \OT1/ptm/m/it/8 A n
 ovel
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 275--278
+Underfull \hbox (badness 10000) in paragraph at lines 291--294
 \OT1/ptm/m/it/8 in-te-grated chas-sis con-troller for full drive-by-wire ve-hi-
 cles
  []
@@ -711,12 +721,12 @@ cles
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ¤ in font ptmr7t!
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--283
+Underfull \hbox (badness 10000) in paragraph at lines 296--299
 []\OT1/ptm/m/n/8 Jordan Kali-nowski, Thomas Drage, Thomas Brunl
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--283
+Underfull \hbox (badness 10000) in paragraph at lines 296--299
 \OT1/ptm/m/it/8 Drive-By-Wire for an Au-tonomous For-mula SAE Car
  []
 
@@ -731,31 +741,25 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
-
-] (./studies_on_mechatronics.aux) ) 
+[4] (./studies_on_mechatronics.aux) ) 
 Here is how much of TeX's memory you used:
- 14743 strings out of 493013
- 285483 string characters out of 6136993
- 338036 words of memory out of 5000000
- 17992 multiletter control sequences out of 15000+600000
+ 14755 strings out of 493013
+ 285879 string characters out of 6136993
+ 334044 words of memory out of 5000000
+ 18001 multiletter control sequences out of 15000+600000
  41634 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 59i,11n,94p,795b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2016/texmf-dist/fonts/enc/dvips/
-base/8r.enc}<c:/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.p
-fb><c:/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/te
-xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb><c:/texlive/2016
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2016/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2016/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2016/texmf-dist/fonts/type1/urw/ti
-mes/utmb8a.pfb><c:/texlive/2016/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c
-:/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/texlive/2016/tex
-mf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on studies_on_mechatronics.pdf (4 pages, 115911 bytes).
+ 59i,7n,94p,797b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
+{c:/texlive/2016/texmf-dist/fonts/enc/dvip
+s/base/8r.enc}<c:/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10
+.pfb><c:/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/texlive/2
+016/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/texlive/2016/texmf-dist/fo
+nts/type1/urw/times/utmr8a.pfb><c:/texlive/2016/texmf-dist/fonts/type1/urw/time
+s/utmri8a.pfb>
+Output written on studies_on_mechatronics.pdf (4 pages, 126028 bytes).
 PDF statistics:
- 61 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
+ 42 PDF objects out of 1000 (max. 8388607)
+ 29 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 18 words of extra memory for PDF output out of 10000 (max. 10000000)
 

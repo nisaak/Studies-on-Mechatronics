@@ -27,7 +27,7 @@ Drive-by-Wire
 \and
 
 \IEEEauthorblockN{Richard von Moos}
-\IEEEauthorblockA{student number: \\ 10-935-740}
+\IEEEauthorblockA{student number: \\ 14-935-740}
 }
 
 \maketitle
@@ -46,19 +46,19 @@ Drive-by-Wire
 \pagestyle{plain}
 
 \begin{abstract}
-A   B STRaACt   TT  AAAAAAAAAAAAAAARTTTT
+A drive-by-wire system consists of numerous layers, many of which are of very complex nature. This paper aims to aims to summarise these layers, without going to much into detail. Delving to deep into the topic of drive-by-wire would be far beyond the scope of a paper. In this paper, topics such as modelling, fault tolerance and control algorithms are discussed. 
 \end{abstract}
 
 
 \section{Introduction}
 
-%Motivation
 The decision to write a paper on the state of the art of drive-by-wire systems came natural, as we were designing a drive-by-wire system ourselves for our bachelor thesis. With the rise in popularity of electric cars, manufacturers and research groups see new opportunities in overhauling the previous methods of controlling a car.\\
 This rise in interest led to many approaches and solutions. The idea of this paper is not to gain new insights, but to provide the reader with a basic understanding of this topic. The content of this paper is mostly based on the findings of the state of the art technology.
 
 
 
-A drive-by-wire system mostly focuses on improving vehicle functionality and driver safety. Assistance systems can be introduced much easier. This is done, by decoupling mechanical linkages, removing hydraulic systems and replacing them with electronic actuators, sensors and controllers.\\ With the help of feedback sensors, the car assists the driver in the judgement of the conditions and the vehicle's state. A rotary motion sensor is quicker to detect wheel slip and reacts accordingly. A drive-by-wire system provides many advantages, such as the aforementioned safety aspect, functionality, smaller installation place and easier implementation for future use in autonomous vehicles.
+A drive-by-wire system mostly focuses on improving vehicle functionality and driver safety. Assistance systems can be introduced much easier. This is done, by decoupling mechanical linkages, removing hydraulic systems and replacing them with electronic actuators, sensors and controllers.
+\\ With the help of feedback sensors, the car assists the driver in the judgement of the conditions and the vehicle's state. A rotary motion sensor is quicker to detect wheel slip and reacts accordingly. A drive-by-wire system provides many advantages, such as the aforementioned safety aspect, functionality, smaller installation place and easier implementation for future use in autonomous vehicles.
 \\These however come with a significant rise in complexity. With the high requirements in safety, there have to be many fallback levels. These requirements especially affect the cost of the vehicle. In chapter IV we will go into further detail of fault tolerance.
 
 The paper is structured as follows. An overview of a drive-by-wire system is given in section II. In Section III we show the different ways how the vehicle dynamics were modelled and implemented in some papers.
@@ -71,20 +71,29 @@ In the following we will abbreviate drive by wire with dbw, steer-by-wire with s
 
 \section{Drive by Wire}
 
-A drive-by-wire system usually consists of three subsystems, namely steer-by-wire, brake-by-wire and throttle-by-wire. 
+A drive-by-wire system usually consists of three subsystems, namely steer-by-wire, brake-by-wire and throttle-by-wire, each playing an important role in the functionality of the whole system.
 
 \subsection{Steer by Wire}
 
 %Control Objective
 %Components
 By setting up appropriate sensor and actor dynamics, a stable steer-by-wire system can be created.
-The steering feel of a mechanical decoupled steer by wire car can be even better than in a car with conventional electromechanical steering 
+The steering feel of a mechanical decoupled sbw car can be even better than in a car with conventional electromechanical steering, as the steering wheel and the front wheels are decoupled and can be controlled independently. This allows for a adaptive steering feel in different scenarios. \cite{Se-Wook} proposes a steering wheel controller for reactive torque, such that at high velocities, the steering reactive torque increases significantly, hindering abrupt changes by the driver and keeping the car steady. Overall two parameters determine the reactive torque mapping. In non dbw system, such a torque mapping is not in place, as the tyre's self aligning torque itself produces a reactive torque according to the vehicle's speed and wheel position. 
 %(Koch, 2009(Steer by wire)).
 
 A central question that comes with the objective of robust steer-by-wire is how the steering interface e.g. steering wheel gives a reference target and what sensor measurement is fed back to the steering interface as steering response. One way of doing this is to define a reference target by applying a torque to the steering wheel. The sensor measurement will be sent back to the steering wheel and is translated to a steering angle. If this combination is coupled with yaw velocity as reference 
 target as well as response, a working steering function can be implemented. \\
-In the case of oversteering the feedback will yield a greater steering angle as the current one, this leads to the current steering position being coupled to a smaller force what directly decreases the reference target and therefore acts stabilizing.
-%four wheel steering mentioned in  {7]}
+In the case of oversteering the feedback will yield a greater steering angle as the current one, this leads to the current steering position being coupled to a smaller force what directly decreases the reference target and therefore acts stabilizing. Oversteering happens when the rear tire lose traction and a undesired high yaw rate results.
+Understeering results from traction loss of the front tires, causing the vehicle to follow more the direction of the lateral forces.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\linewidth]{pictures/Figure-1-Under-steering-vs-over-steering}
+	\caption{}
+	\label{fig:figure-1-under-steering-vs-over-steering}
+\end{figure}
+
+\newpage
 
 \subsection{Throttle by Wire}
 
@@ -95,59 +104,57 @@ If each wheel is powered by an individual motor as proposed in [3], there is an 
 
 \subsection{Brake by Wire}
 
-A well-implemented bbw system notably increases the vehicle's performance in situation where controlling the vehicle's yaw rate is of importance. While a system consisting only of electronic actuators is proposed in \cite{Weidong}, \cite{Aoki} introduces a hydraulic servo brake system with regenerative control. 
+A well-implemented bbw system notably increases the vehicle's performance in situation where controlling the vehicle's yaw rate is of importance. A bbw system controls the vehicle yaw rate by differential braking, i.e. when the driver pushes the pedal, the force on each brake is determined by the controller. It can be shown, that a differential braking outperforms steering methods to control the yaw rate.
+While a system consisting only of electronic actuators is proposed in \cite{Weidong}, \cite{Aoki} introduces a hydraulic servo brake system with regenerative control for more efficient fuel consumption, coupled with a braking feel that is unaffected by braking control.
+
 %richi schrib du öber das bitte
-
-
-
-\subsubsection{Implementation}
 
 
 \section{Vehicle Dynamics, Vehicle Model}
 
-Behind a working dbw system, there needs to be a detailed and complete vehicle model in place. This mathematical model has a determining influence on the controller's performance. When choosing a model, it is important to specify what level of complexity is sufficient. A simpler model may help design a faster controller, while sacrificing precision. It is therefore crucial to identify which states have to be controlled.
+Behind a working dbw system, there needs to be a detailed and complete vehicle model in place. This mathematical model has a determining influence on the controller's performance. When choosing a model, it is important to specify what level of complexity is sufficient. Forces and motions such as wind force, roll, pitch or heave are therefore often neglected. A simpler model may help design a faster controller, while sacrificing precision. It is therefore crucial to identify which states have to be controlled. 
 
 \subsection{Bicycle/single track model}
-A simple and common model is the bicycle model, also known as single track model. In papers \cite{Zheng} and \cite{vandersande} this vehicle model has been used. It derives from the double track model, where the left and right wheels have been merged in the front and back axis, creating the single track model. The model accounts for yaw, lateral and longitudinal motion. For simplicity, roll is often neglected.
+A simple and common model is the bicycle model, also known as single track model. In papers \cite{Zheng} and \cite{vandersande} this vehicle model has been used. It derives from the double track model, where the left and right wheels have been merged in the front and back axis, creating the single track model. The model accounts for yaw, lateral and longitudinal motion. 
 
-$
-\dot{x}=
-\begin{bmatrix}
-	\dot{v_{y}} \\ 
-	
-\\	\dot{r_{z}}
-\end{bmatrix} 
-=Ax+B\delta_{rack}
-$
-
-$y=r_{z}=Cx$
-
-$
-A=-
-\begin{bmatrix}
-\dfrac{C_{\alpha1}+C_{\alpha2}}{mv_{x}} &
-\dfrac{C_{\alpha1}a-C_{\alpha2}b}{mv_{x}}+v_{x}\\
-\\
-\dfrac{aC_{\alpha1}-bC_{\alpha2}}{I_{zz} v_{x}} &
-\dfrac{a^2C_{\alpha1}+b^2C_{\alpha2}}{I_{zz}v_{x}}
-\end{bmatrix}
-$
-\\
-
-
-$B=
-\begin{bmatrix}
-\dfrac{C_{\alpha1}}{m}\\
-\\
-\dfrac{aC_{\alpha2}}{I_{zz}}
-\end{bmatrix}
-$
-,
-$C=
-\begin{bmatrix}
-0 & 1
-\end{bmatrix}
-$
+%$
+%\dot{x}=
+%\begin{bmatrix}
+%	\dot{v_{y}} \\ 
+%	
+%\\	\dot{r_{z}}
+%\end{bmatrix} 
+%=Ax+B\delta_{rack}
+%$
+%
+%$y=r_{z}=Cx$
+%
+%$
+%A=-
+%\begin{bmatrix}
+%\dfrac{C_{\alpha1}+C_{\alpha2}}{mv_{x}} &
+%\dfrac{C_{\alpha1}a-C_{\alpha2}b}{mv_{x}}+v_{x}\\
+%\\
+%\dfrac{aC_{\alpha1}-bC_{\alpha2}}{I_{zz} v_{x}} &
+%\dfrac{a^2C_{\alpha1}+b^2C_{\alpha2}}{I_{zz}v_{x}}
+%\end{bmatrix}
+%$
+%\\
+%
+%
+%$B=
+%\begin{bmatrix}
+%\dfrac{C_{\alpha1}}{m}\\
+%\\
+%\dfrac{aC_{\alpha2}}{I_{zz}}
+%\end{bmatrix}
+%$
+%,
+%$C=
+%\begin{bmatrix}
+%0 & 1
+%\end{bmatrix}
+%$
 
 By looking at the vehicle dynamics, it becomes apparent that the single track model does not model any non-linearities of the vehicle. Paper \cite{vandersande} accounts for the non-linearity of the tyres by introducing the local gradient of the lateral force. It describes the tyre's cornering stiffness when linearised around a operating point.
 
@@ -155,6 +162,8 @@ By looking at the vehicle dynamics, it becomes apparent that the single track mo
 \subsection{double-track model}
 The double track model is a more complex version of the single track model. 
 Paper \cite{Song} uses a combination of the single and double track model. While the double track is implemented to deal with the non-linear characteristic of the vehicle, they argue that a driver usually steers the vehicle according to its linear response. Therefore the bicycle model is introduced as a reference model, so that manoeuvring the vehicle is easy, both in linear and non-linear range.
+In paper \cite{Weidong}, the double-track model was used in order to properly adress
+brake control design, so that each wheel can be modelled individually.
 
 \subsection{Multi-body modelling}
 
@@ -200,12 +209,19 @@ This is one of the many reasons, why dbw vehicle are usually associated with hig
 
 
 \section{Control Algorithms}
+
+\subsection{Control Objective}
+
+Depending on the modelled states, control objectives can vary. The most important however is to stabilise the vehicle's yaw rate around its centre of gravity. Therefore small yaw rate error overshoots are desired. Many controllers also aim to be independent of longitudinal dynamics, as they usually are much slower compared to the rest of the vehicle's dynamics. In order for controllers to perform beyond the capabilities of human drivers, fast error convergence are desired as well. In \cite{vandersande} it is assumed to place the poles such that the bandwidth is higher than around 4 Hz, with the average human reaction time being around 270 ms. 
+
 \subsection{Non-Linearity}
 
-A car's dynamics are highly non-linear. This necessitates a non-linear control algorithm. This can be seen in \cite{vandersande}, where a LQR controller was developed for comparison. From the test results it is apparent that the controller is not able to stabilise the vehicle, resulting in large yaw swaying. This comes down to the fact that high lateral accelerations cause the tyres to behave non-linearly and causing the tyre's parameters to deviate substantially from the fixed parameters of the model.
+A car's dynamics are non-linear. Especially the tyres non-linear characteristics cause this behaviour. This necessitates a non-linear control algorithm. This can be seen in \cite{vandersande}, where a LQR controller was developed for comparison. From the test results it is apparent that the controller is not able to stabilise the vehicle, resulting in large yaw swaying. This comes down to the fact that high lateral accelerations cause the tyres to behave non-linearly and causing the tyre's parameters to deviate substantially from the fixed parameters of the model.
 
 
 \subsection{Sliding Mode Control}
+
+Sliding mode is mentioned in papers \cite{Weidong} and \cite{Aoki}. The principle of sliding mode control is that it switches between states in order to slide along a surface which usually corresponds to a linear system. This linear system has the properties of a desired system which is easy to control. The discontinuous signal given to switch between those states can be described as simple input such as "on/off" or "forwards/backwards". These simple control commands make the system insensitive against parameter changes and non-linearities. This of course has the downside of  putting a lot of strain on electric actuators.  	
 
 \subsection{Fuzzy Control}
 The basic idea of fuzzy control is to map a set of input variables to a set of output instructions by using a multitude of if then statements. Therefore the inputs are characterized by their membership to a set of fuzzy sets. The degree of membership can be gradual and each input can be a member of multiple fuzzy sets to certain degree. This process of converting a set of crisp input variables to a set of fuzzy membership functions is called fuzzyfication. The next step is to determine the output based the underlying control rules. The membership functions are mapped to a fuzzy output. This fuzzy output is then defuzzyficated to deliver a real world output. In short, each combination of membership of a variable leads output defined by the if then rules.
