@@ -100,7 +100,6 @@ A well-implemented bbw system notably increases the vehicle's performance in sit
 
 
 
-
 \subsubsection{Implementation}
 
 
@@ -159,18 +158,20 @@ Paper \cite{Song} uses a combination of the single and double track model. While
 
 \subsection{Multi-body modelling}
 
-\cite{vandersande} proposes a multi-body model derived with the software package from MATLAB/Simulink formerly called SimMechanics, now called Simscape Multibody. This can be used to model the car in great detail. 
+\cite{vandersande} proposes a multi-body model derived with the software package from MATLAB/Simulink formerly called SimMechanics, now called Simscape Multibody. This can be used to model the car in great detail, as multibody models account for the interconnection of rigid and flexible parts, which make up e.g. a whole car.
 
 \subsection{Tyre modelling}
 
 Tyre modelling is a very complex and heavily research topic in the automotive industry, as tyres are probably the most difficult, but also important components to model. We will therefore not go into too much detail, and keep the concepts and ideas as simple as possible.
-The basis of tyre modelling lays in the tyre's elasticity and deformation when subjected to forces. These characteristics 
+The basis of tyre modelling lays in the tyre's elasticity and deformation when subjected to forces. Tyre models are usually divided into models which underlie a physical approach and models which are based on a empirical approach. Empirical models try to recreate the tyre's characteristic curve measured in tests. Physical models are based on the physical properties and forces acting on the tyre in order to create a precise mathematical model. The decision which tyre model to chose often requires to find a balance between computing time and performance.
 
-\cite{Se-Wook} makes use of the Pacejka model, also called the magic formula. The name stems the fact that no physical basis was used for this model, but a wide variety of coefficients are in place to tune the existing forces on the tyre.
-\cite{Weidong} makes use of the Dugoff model.
+In the papers, two models stick out. \cite{Se-Wook} makes use of the Pacejka model, also called the magic formula. The name stems the fact that it is a empirical approach and therefore no physical basis was used for this model, but a wide variety of coefficients are in place to tune the existing forces on the tyre, somehow creating a "magic formula".\\
+\cite{Weidong} makes use of the Dugoff model. Roughly speaking, the Dugoff model is a analytical model based on the relation between slip angle, tyre stiffness and wheel slip ratio. The exact formulas can be found in paper \cite{Weidong}.
+
+Of course there are many more models to cover, many of which are also adapted and modified versions of previous existing ones. Explaining these and going to much into detail would not beyond the scope of this paper.
 
 \section{Fault tolerance}
-The basic requirement for the operation of a sbw system is a fault tolerant system architecture %(Heitzer und Seewald, 2000).
+The basic requirement for the operation of a dbw system is a fault tolerant system architecture %(Heitzer und Seewald, 2000).
 
 In \cite{Lenkungshandbuch} it is explained, the customers wants his product to be reliable. This of course means that is has to provide a functionality for a designated time under certain circumstances. This leads to the need of balancing between safety and availability. If a product is safe under all circumstances, it may not be available at some times. In the case of failure of a non critical system component, only certain functions of the system are shut down but the overall functionality and availability remains. For example if a wheel rotation sensor fails, only functions that need the current velocity shut down, such as cruise control or the speedometer.
 
@@ -228,11 +229,11 @@ An especially interesting test setup is the split-$\mu$ braking. In real life, i
 
 \section{Results and Discussion}
 
-Drive-by-wire system possess the ability to revolutionise the automotive industry. While they provide many technological advantages over standard cars, they still limp behind safety. Due to the increase in complexity and the related high error susceptibility, they have not yet gained the trust of the public, which is obviously a requirement for  success.
+The goal of this paper was to provide the reader with a basic understanding of the topic drive by wire. While reading into this subject, it became apparent that covering everything in this paper would not be possible, as many concept would require more in-depth knowledge, time and research to explain properly. Because of this, many topics, such as control algorithms or tyre modelling, were merely mentioned to show their importance in the design of a drive by wire system.
 
 \section{Conclusion}
 
-De richi stenkt 
+Drive-by-wire system possess the ability to revolutionise the automotive industry. While they provide many technological advantages over standard cars, they still limp behind safety. Due to the increase in complexity and the related high error susceptibility, they have not yet gained the trust of the public, which is obviously a requirement for success. 
 
 \begin{thebibliography}{1}
 \bibitem{Weidong}
